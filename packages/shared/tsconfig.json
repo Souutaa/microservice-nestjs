@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ES2021",
+    "module": "commonjs",
+    "strict": true,
+    "outDir": "./dist", //Chỉ định thư mục đầu ra cho mã biên dịch (tất cả các file sau khi biên dịch sẽ nằm trong dist).
+    "emitDecoratorMetadata": true, //Thêm metadata cho các decorator (cần thiết khi sử dụng các framework như NestJS).
+    "experimentalDecorators": true, //Cho phép sử dụng decorator (tính năng đang thử nghiệm trong JavaScript).
+    "declaration": true, //Tạo file .d.ts để cung cấp thông tin kiểu cho các module đã biên dịch (hữu ích khi bạn chia sẻ package TypeScript).
+    "removeComments": true, //Loại bỏ tất cả các comment trong file JavaScript sau khi biên dịch.
+    "sourceMap": true, //Tạo file .map để hỗ trợ debugging (gắn kết mã biên dịch với mã nguồn gốc).
+    "rootDir": "src", //Chỉ định thư mục gốc chứa mã nguồn TypeScript (tất cả các file TypeScript được biên dịch phải nằm trong thư mục src).
+    "incremental": true, //Bật tính năng biên dịch tăng dần. TypeScript lưu lại thông tin giữa các lần biên dịch để tăng tốc độ.
+    "moduleResolution": "node", //Sử dụng cách Node.js xử lý module để tìm kiếm file khi import (dựa trên node_modules và các file định nghĩa).
+    "composite": true, //Bật tính năng biên dịch dạng "composite project" (hữu ích cho các dự án nhiều module hoặc dùng --build).
+    "esModuleInterop": true,
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "test", "dist", "**/*spec.ts"]
+}

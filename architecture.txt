@@ -1,0 +1,42 @@
+root/
+├── api-gateway/
+│   ├── src/
+│   │   ├── controllers/
+│   │   ├── services/
+│   │   ├── dto/
+│   │   └── main.ts
+│   └── package.json
+├── command-service/
+│   ├── src/
+│   │   ├── modules/
+│   │   │   ├── orders/
+│   │   │   │   ├── controllers/
+│   │   │   │   ├── services/
+│   │   │   │   ├── entities/
+│   │   │   │   ├── repositories/
+│   │   │   │   └── dto/
+│   │   ├── kafka/
+│   │   ├── cassandra/
+│   │   └── main.ts
+│   └── package.json
+├── query-service/
+│   ├── src/
+│   │   ├── modules/
+│   │   │   ├── orders/
+│   │   │   │   ├── controllers/
+│   │   │   │   ├── services/
+│   │   │   │   ├── dto/
+│   │   │   │   └── elasticsearch/
+│   │   ├── kafka/
+│   │   └── main.ts
+│   └── package.json
+├── shared/
+│   ├── dto/
+│   │   └── order.dto.ts
+│   ├── kafka/
+│   │   ├── kafka-producer.service.ts
+│   │   └── kafka-config.ts
+│   ├── constants/
+│   │   └── topics.ts
+│   └── package.json
+└── docker-compose.yml
