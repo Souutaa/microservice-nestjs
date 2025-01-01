@@ -18,6 +18,14 @@ export const logger = createLogger({
         }),
       ),
     }), // Log ra console với màu sắc
-    new transports.File({ filename: 'logs/app.log' }), // Ghi log vào file
+    new transports.File({
+      filename: 'logs/app.log',
+      format: format.combine(
+        format.timestamp(),
+        format.printf(({ level, message, timestamp }) => {
+          return `${timestamp} [${level.toUpperCase()}]: ${message}`;
+        }),
+      ),
+    }),
   ],
 });
