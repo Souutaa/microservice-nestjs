@@ -1,18 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { KafkaModule, KafkaProducer } from 'kafka';
-import { ActionTypes } from 'shared';
+import { KAFKA_CONSTANTS, OrderDTO } from 'shared';
 @Injectable()
 export class OrderService {
   private kafkaProducer: KafkaProducer;
 
   constructor() {
     this.kafkaProducer = KafkaModule.createProducer(
-      ActionTypes.OrderActionTypes.CREATE_ORDER,
+      KAFKA_CONSTANTS.Topic.TOPIC_ORDER,
       ['localhost:9092'],
     );
   }
 
-  async createOrder(order: any) {
+  async createOrder(order: OrderDTO) {
     // Kết nối Kafka Producer
     await this.kafkaProducer.connect();
 

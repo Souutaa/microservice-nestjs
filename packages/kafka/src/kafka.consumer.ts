@@ -1,11 +1,12 @@
 import { Kafka, Consumer, EachMessagePayload } from 'kafkajs';
-import { ActionTypes } from 'shared';
+import { KAFKA_CONSTANTS } from 'shared';
+import { sendMessageType } from './dtos';
 
 export class KafkaConsumer {
   private consumer: Consumer;
 
   constructor(
-    private readonly topic: ActionTypes,
+    private readonly topic: KAFKA_CONSTANTS.Topic,
     private readonly groupId: string,
     private readonly brokers: string[],
   ) {
@@ -25,7 +26,7 @@ export class KafkaConsumer {
     );
   }
 
-  async onMessage(callback: (message: any) => void) {
+  async onMessage<T>(callback: (message: sendMessageType<T>) => void) {
     await this.consumer.run({
       eachMessage: async ({ message }: EachMessagePayload) => {
         const parsedMessage = JSON.parse(message.value?.toString() || '{}');

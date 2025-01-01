@@ -1,11 +1,11 @@
 import { Kafka, Producer } from 'kafkajs';
-import { ActionTypes } from 'shared';
+import { KAFKA_CONSTANTS } from 'shared';
 
 export class KafkaProducer {
   private producer: Producer;
 
   constructor(
-    private readonly topic: ActionTypes,
+    private readonly topic: KAFKA_CONSTANTS.Topic,
     private readonly brokers: string[],
   ) {
     const kafka = new Kafka({

@@ -1,14 +1,17 @@
 import { KafkaProducer } from './kafka.producer';
 import { KafkaConsumer } from './kafka.consumer';
-import { ActionTypes } from 'shared';
+import { KAFKA_CONSTANTS } from 'shared';
 
 export class KafkaModule {
-  static createProducer(topic: ActionTypes, brokers: string[]): KafkaProducer {
+  static createProducer(
+    topic: KAFKA_CONSTANTS.Topic,
+    brokers: string[],
+  ): KafkaProducer {
     return new KafkaProducer(topic, brokers);
   }
 
   static createConsumer(
-    topic: ActionTypes,
+    topic: KAFKA_CONSTANTS.Topic,
     groupId: string,
     brokers: string[],
   ): KafkaConsumer {
