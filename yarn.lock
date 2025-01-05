@@ -1167,15 +1167,6 @@
   resolved "https://registry.npmjs.org/@pkgr/core/-/core-0.1.1.tgz"
   integrity sha512-cq8o4cWH0ibXh9VGi5P20Tu9XF/0fFXl9EUinr9QfTM7a7p0oTA4iJRCQWppXR1Pg8dSM0UCItCkPwsk9qWWYA==
 
-"@quanglong/shared@file:packages/shared":
-  version "1.0.0"
-  dependencies:
-    "@elastic/elasticsearch" "^8.6.0"
-    "@nestjs/common" "^10.0.0"
-    cassandra-driver "^4.6.4"
-    kafkajs "^2.0.0"
-    winston "^3.17.0"
-
 "@sigstore/bundle@^1.1.0":
   version "1.1.0"
   resolved "https://registry.npmjs.org/@sigstore/bundle/-/bundle-1.1.0.tgz"

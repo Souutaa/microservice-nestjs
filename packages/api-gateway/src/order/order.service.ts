@@ -4,12 +4,13 @@ import { KAFKA_CONSTANTS, OrderDTO } from 'shared';
 @Injectable()
 export class OrderService {
   private kafkaProducer: KafkaProducer;
+  private topic = KAFKA_CONSTANTS.Topic;
+  private actionOrder = KAFKA_CONSTANTS.OrderActionTypes;
 
   constructor() {
-    this.kafkaProducer = KafkaModule.createProducer(
-      KAFKA_CONSTANTS.Topic.TOPIC_ORDER,
-      ['localhost:9092'],
-    );
+    this.kafkaProducer = KafkaModule.createProducer(this.topic.TOPIC_ORDER, [
+      'localhost:29092',
+    ]);
   }
 
   async createOrder(order: OrderDTO) {
@@ -17,7 +18,10 @@ export class OrderService {
     await this.kafkaProducer.connect();
 
     // Gửi thông tin đơn hàng tới Kafka
-    await this.kafkaProducer.sendMessage(order);
+    await this.kafkaProducer.sendMessage({
+      type: this.actionOrder.CREATE_ORDER,
+      payload: order,
+    });
 
     // Ngắt kết nối Kafka Producer
     await this.kafkaProducer.disconnect();

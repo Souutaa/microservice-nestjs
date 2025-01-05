@@ -15,7 +15,12 @@ export class KafkaConsumer {
       brokers: this.brokers,
     });
 
-    this.consumer = kafka.consumer({ groupId });
+    this.consumer = kafka.consumer({
+      groupId,
+      retry: {
+        retries: 5, // Số lần thử lại nếu gặp lỗi
+      },
+    });
   }
 
   async connect() {

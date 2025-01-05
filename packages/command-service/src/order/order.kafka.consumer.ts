@@ -13,7 +13,7 @@ export class OrderListener implements OnModuleInit {
     this.kafkaConsumer = KafkaModule.createConsumer(
       KAFKA_CONSTANTS.Topic.TOPIC_ORDER, // Kafka topic
       'command-service-group', // Kafka group
-      ['localhost:9092'], // Kafka broker
+      ['localhost:29092'], // Kafka broker
     );
   }
 

@@ -1,5 +1,6 @@
 import { Kafka, Producer } from 'kafkajs';
 import { KAFKA_CONSTANTS } from 'shared';
+import { sendMessageType } from './dtos';
 
 export class KafkaProducer {
   private producer: Producer;
@@ -21,7 +22,7 @@ export class KafkaProducer {
     console.log(`Kafka Producer connected to topic "${this.topic}"`);
   }
 
-  async sendMessage(message: any) {
+  async sendMessage<T>(message: sendMessageType<T>) {
     await this.producer.send({
       topic: this.topic,
       messages: [{ value: JSON.stringify(message) }],

@@ -1,13 +1,20 @@
 import { Injectable } from '@nestjs/common';
-import { CassandraClient } from 'shared'; // Import Cassandra từ shared
+import { KafkaProducer, KafkaModule } from 'kafka';
+import { CassandraClient, KAFKA_CONSTANTS } from 'shared'; // Import Cassandra từ shared
 import { OrderDTO } from 'shared'; // DTO cho đơn hàng
 
 @Injectable()
 export class OrderService {
   private cassandraClient: CassandraClient;
+  private kafkaProducer: KafkaProducer;
+  private topic = KAFKA_CONSTANTS.Topic;
+  private actionOrder = KAFKA_CONSTANTS.OrderActionTypes;
 
   constructor() {
     this.cassandraClient = new CassandraClient(); // Khởi tạo Cassandra Client
+    this.kafkaProducer = KafkaModule.createProducer(this.topic.TOPIC_ORDER, [
+      'localhost:29092',
+    ]);
   }
 
   /**
@@ -15,7 +22,16 @@ export class OrderService {
    */
   async createOrder(order: OrderDTO) {
     await this.cassandraClient.insert('orders', order);
-    console.log('Order created and saved to Cassandra:', order);
+
+    // Gửi sự kiện tới Kafka
+    await this.kafkaProducer.connect();
+    await this.kafkaProducer.sendMessage({
+      type: this.actionOrder.CREATE_ORDER,
+      payload: order,
+    });
+    await this.kafkaProducer.disconnect();
+
+    console.log('Order created and event sent to Kafka:', order);
   }
 
   /**
