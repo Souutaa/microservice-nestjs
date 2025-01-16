@@ -52,4 +52,19 @@ export class OrderService {
     await this.cassandraClient.insert('orders', order); // Upsert dữ liệu
     console.log('Order updated in Cassandra:', order);
   }
+
+  async getOrdersList() {
+    const orders = await this.cassandraClient.select('orders');
+
+    // Gửi sự kiện tới Kafka
+    // await this.kafkaProducer.connect();
+    // await this.kafkaProducer.sendMessage({
+    //   type: this.actionOrder.FETCH_ORDER,
+    //   payload: orders,
+    // });
+    // await this.kafkaProducer.disconnect();
+
+    console.log('Order created and event sent to Kafka:', orders);
+    return orders;
+  }
 }

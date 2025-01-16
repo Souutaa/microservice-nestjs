@@ -37,8 +37,13 @@ export class CassandraClient {
    * @param condition - Điều kiện WHERE
    * @param params - Giá trị thay thế
    */
-  async select(table: string, condition: string, params: any[]) {
-    const query = `SELECT * FROM ${table} WHERE ${condition}`;
+  async select(table: string, condition: string = '', params: any[] = []) {
+    // Xây dựng câu lệnh SQL linh hoạt
+    const query = condition
+      ? `SELECT * FROM ${table} WHERE ${condition}`
+      : `SELECT * FROM ${table}`;
+
+    // Thực thi câu lệnh với hoặc không có tham số
     const result = await this.client.execute(query, params, { prepare: true });
     return result.rows;
   }

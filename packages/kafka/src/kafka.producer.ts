@@ -4,7 +4,6 @@ import { sendMessageType } from './dtos';
 
 export class KafkaProducer {
   private producer: Producer;
-
   constructor(
     private readonly topic: KAFKA_CONSTANTS.Topic,
     private readonly brokers: string[],
