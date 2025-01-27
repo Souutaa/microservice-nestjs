@@ -8,7 +8,8 @@
   },
   "scripts": {
     "build": "lerna run build",
-    "start:dev": "lerna run --parallel --stream start:dev"
+    "start:dev": "lerna run --parallel --stream start:dev",
+    "format": "prettier --write \"packages/**/src/**/*.ts\""
   },
   "devDependencies": {
     "lerna": "^7.0.0"

@@ -35,10 +35,9 @@ export class KafkaConsumer {
     await this.consumer.run({
       eachMessage: async ({ message }: EachMessagePayload) => {
         const parsedMessage = JSON.parse(message.value?.toString() || '{}');
-        console.log(
-          `Message received on topic "${this.topic}":`,
-          parsedMessage,
-        );
+        console.log(`----MESSAGE RECEIVED ON TOPIC "${this.topic}"----`);
+        console.log(parsedMessage);
+        console.log('-------------------------------------------------');
         callback(parsedMessage);
       },
     });
