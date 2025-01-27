@@ -4,7 +4,7 @@ export class ElasticsearchClient {
   private client: Client;
 
   constructor(
-    private readonly node: string = 'http://localhost:9200', // Địa chỉ Elasticsearch
+    private readonly node: string = 'http://0.0.0.0:9200', // Địa chỉ Elasticsearch
   ) {
     this.client = new Client({ node });
   }

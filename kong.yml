@@ -1,0 +1,40 @@
+_format_version: '3.0'
+services:
+  - name: kafka-service
+    url: http://kafka:9092
+
+  - name: cassandra-service
+    url: http://cassandra:9042
+
+  - name: elasticsearch-service
+    url: http://elasticsearch:9200
+
+  - name: api-gateway-service
+    url: http://192.168.1.13:3000
+  # - name: redis-service
+  #   url: http://redis:6380
+
+routes:
+  - name: kafka-route
+    service: kafka-service
+    paths:
+      - /kafka
+
+  - name: cassandra-route
+    service: cassandra-service
+    paths:
+      - /cassandra
+
+  - name: elasticsearch-route
+    service: elasticsearch-service
+    paths:
+      - /elasticsearch
+
+  - name: api-route
+    service: api-gateway-service
+    paths:
+      - /api/orders
+  # - name: redis-route
+  #   service: { redis-service }
+  #   paths:
+  #     - /redis

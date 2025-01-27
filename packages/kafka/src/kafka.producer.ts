@@ -26,7 +26,9 @@ export class KafkaProducer {
       topic: this.topic,
       messages: [{ value: JSON.stringify(message) }],
     });
-    console.log(`Message sent to topic "${this.topic}":`, message);
+    console.log(`------MESSAGE SENT TO TOPIC "${this.topic}"------`);
+    console.log(message);
+    console.log('-------------------------------------------------');
   }
 
   async disconnect() {

@@ -75,31 +75,86 @@ services:
     volumes:
       - es-data:/usr/share/elasticsearch/data
 
-  redis:
-    image: redis:latest
-    ports:
-      - '6380:6380'
-    networks:
-      - kafka-network
-    volumes:
-      - redis-data:/data
+  # redis:
+  #   image: redis:latest
+  #   ports:
+  #     - '6380:6380'
+  #   networks:
+  #     - kafka-network
+  #   volumes:
+  #     - redis-data:/data
 
-  redis-ui:
-    image: rediscommander/redis-commander:latest
-    ports:
-      - '8001:8081'
-    environment:
-      - REDIS_HOSTS=local:redis:6380
+  # redis-ui:
+  #   image: rediscommander/redis-commander:latest
+  #   ports:
+  #     - '8001:8081'
+  #   environment:
+  #     - REDIS_HOSTS=local:redis:6380
+  #   networks:
+  #     - kafka-network
+  kong-database:
+    image: postgres:13
+    container_name: kong-database
     networks:
       - kafka-network
+    environment:
+      POSTGRES_USER: kong
+      POSTGRES_DB: kong
+      POSTGRES_PASSWORD: kongpass
+    ports:
+      - '5432:5432'
+
+  kong-migrations:
+    image: kong/kong-gateway:3.9.0.0
+    container_name: kong-migrations
+    networks:
+      - kafka-network
+    environment:
+      KONG_DATABASE: postgres
+      KONG_PG_HOST: kong-database
+      KONG_PG_PASSWORD: kongpass
+      KONG_PASSWORD: test
+    command: kong migrations bootstrap
+    depends_on:
+      - kong-database
+    restart: 'no' # Migrations chỉ chạy một lần
+
+  kong-gateway:
+    image: kong/kong-gateway:3.9.0.0
+    container_name: kong-gateway
+    networks:
+      - kafka-network
+    environment:
+      KONG_DATABASE: postgres
+      KONG_PG_HOST: kong-database
+      KONG_PG_USER: kong
+      KONG_PG_PASSWORD: kongpass
+      KONG_PROXY_ACCESS_LOG: /dev/stdout
+      KONG_ADMIN_ACCESS_LOG: /dev/stdout
+      KONG_PROXY_ERROR_LOG: /dev/stderr
+      KONG_ADMIN_ERROR_LOG: /dev/stderr
+      KONG_ADMIN_LISTEN: '0.0.0.0:8001'
+      KONG_ADMIN_GUI_URL: 'http://localhost:8002'
+    ports:
+      - '8000:8000' # Kong Proxy
+      - '8443:8443' # Kong Proxy HTTPS
+      - '8001:8001' # Kong Admin API
+      - '8444:8444' # Kong Admin API HTTPS
+      - '8002:8002' # Kong Manager GUI
+      - '8445:8445'
+      - '8003:8003'
+      - '8004:8004'
+    depends_on:
+      - kong-migrations
+    restart: always
 
 volumes:
   zookeeper-data:
   kafka-data:
   cassandra-data:
   es-data:
-  redis-data:
-  redis-ui-data:
+  # redis-data:
+  # redis-ui-data:
 
 networks:
   kafka-network:

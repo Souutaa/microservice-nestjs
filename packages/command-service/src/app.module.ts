@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { OrderListener } from './order/order.kafka.consumer';
 import { OrderService } from './order/order.service';
+import { OrderController } from './order/order.controller';
 
 @Module({
   imports: [],
-  controllers: [],
-  providers: [OrderListener, OrderService],
+  controllers: [OrderController],
+  providers: [OrderService],
 })
 export class AppModule {}

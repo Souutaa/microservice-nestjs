@@ -5,7 +5,7 @@ export class CassandraClient {
 
   constructor(
     private readonly keyspace: string = 'ecommerce_keyspace',
-    private readonly contactPoints: string[] = ['127.0.0.1'], // Địa chỉ Cassandra
+    private readonly contactPoints: string[] = ['0.0.0.0'], // Địa chỉ Cassandra
     private readonly localDataCenter: string = 'datacenter1', // Tên datacenter
   ) {
     this.client = new Client({
@@ -28,7 +28,7 @@ export class CassandraClient {
     const query = `INSERT INTO ${table} (${fields}) VALUES (${placeholders})`;
 
     await this.client.execute(query, Object.values(data), { prepare: true });
-    console.log(`Cassandra: Inserted into table ${table}`);
+    console.log(`------Cassandra: Inserted into table: "${table}"------`);
   }
 
   /**
