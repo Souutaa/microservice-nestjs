@@ -9,6 +9,8 @@
   "scripts": {
     "build": "lerna run build",
     "start:dev": "lerna run --parallel --stream start:dev",
+    "clean:dist": "lerna exec -- powershell -Command Remove-Item -Recurse -Force dist;",
+    "clean:node": "lerna clean --yes && powershell -Command Remove-Item -Recurse -Force node_modules;",
     "format": "prettier --write \"packages/**/src/**/*.ts\""
   },
   "devDependencies": {
