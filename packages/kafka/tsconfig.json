@@ -15,6 +15,7 @@
     "composite": true, //Bật tính năng biên dịch dạng "composite project" (hữu ích cho các dự án nhiều module hoặc dùng --build).
     "esModuleInterop": true,
     "skipLibCheck": true,
+    "declarationDir": "./dist"
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "test", "dist", "**/*spec.ts"]
