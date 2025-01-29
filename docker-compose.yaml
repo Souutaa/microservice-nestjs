@@ -103,6 +103,8 @@ services:
       POSTGRES_PASSWORD: kongpass
     ports:
       - '5432:5432'
+    volumes:
+      - kong-db-data:/var/lib/postgresql/data
 
   kong-migrations:
     image: kong/kong-gateway:3.9.0.0
@@ -148,11 +150,40 @@ services:
       - kong-migrations
     restart: always
 
+  shared:
+    build:
+      context: ./packages/shared
+      dockerfile: Dockerfile
+    networks:
+      - kafka-network
+    volumes:
+      - shared-build:/app/dist
+    depends_on:
+      - kafka
+      - cassandra
+      - elasticsearch
+
+  kafka-library:
+    build:
+      context: ./packages/kafka
+      dockerfile: Dockerfile
+    networks:
+      - kafka-network
+    volumes:
+      - shared-build:/app/packages/shared/dist
+    depends_on:
+      - shared
+      - kafka
+      - cassandra
+      - elasticsearch
+
 volumes:
   zookeeper-data:
   kafka-data:
   cassandra-data:
   es-data:
+  kong-db-data:
+  shared-build:
   # redis-data:
   # redis-ui-data:
 

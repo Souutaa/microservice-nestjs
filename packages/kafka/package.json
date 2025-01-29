@@ -7,7 +7,7 @@
   "author": "Quang Long",
   "license": "MIT",
   "scripts": {
-    "build": "tsc",
+    "build": "rimraf tsconfig.tsbuildinfo && tsc",
     "start:dev": "tsc -W"
   },
   "dependencies": {

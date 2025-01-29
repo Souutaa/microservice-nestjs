@@ -14,6 +14,8 @@
     "format": "prettier --write \"packages/**/src/**/*.ts\""
   },
   "devDependencies": {
-    "lerna": "^7.0.0"
+    "lerna": "^7.0.0",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.0.4"
   }
 }
