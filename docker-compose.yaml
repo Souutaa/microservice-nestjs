@@ -157,7 +157,7 @@ services:
     networks:
       - kafka-network
     volumes:
-      - shared-build:/app/dist
+      - ./shared-build:/app/packages/shared/dist
     depends_on:
       - kafka
       - cassandra
@@ -170,12 +170,37 @@ services:
     networks:
       - kafka-network
     volumes:
-      - shared-build:/app/packages/shared/dist
+      - ./shared-build:/app/packages/shared/dist:ro
+      - ./kafka-build:/app/packages/kafka/dist
     depends_on:
       - shared
       - kafka
       - cassandra
       - elasticsearch
+
+  # Chưa chắc chạy được
+  # commands-service:
+  #   build:
+  #     context: ./packages/command-service
+  #     dockerfile: Dockerfile
+  #   container_name: command-service
+  #   ports:
+  #     - '3001:3001'
+  #   networks:
+  #     - kafka-network
+  #   depends_on:
+  #     - shared
+  #     - kafka-library
+  #     - kafka
+  #     - cassandra
+  #     - elasticsearch
+  #   volumes:
+  #     - ./shared-build:/app/packages/shared/dist:ro
+  #     - ./kafka-build:/app/packages/kafka/dist:ro
+  #   environment:
+  #     KAFKA_BROKER: kafka:9092
+  #     CASSANDRA_HOST: cassandra
+  #     ELASTICSEARCH_HOST: elasticsearch
 
 volumes:
   zookeeper-data:

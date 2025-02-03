@@ -7,10 +7,12 @@
     ]
   },
   "scripts": {
-    "build": "lerna run build",
+    "build": "yarn build:shared && yarn build:kafka && lerna run build",
+    "build:shared": "lerna run build --scope shared",
+    "build:kafka": "lerna run build --scope kafka",
     "start:dev": "lerna run --parallel --stream start:dev",
-    "clean:dist": "lerna exec -- powershell -Command Remove-Item -Recurse -Force dist;",
-    "clean:node": "lerna clean --yes && powershell -Command Remove-Item -Recurse -Force node_modules;",
+    "clean:dist": "lerna exec -- rimraf dist;",
+    "clean:node": "lerna clean --yes && rimraf node_modules;",
     "format": "prettier --write \"packages/**/src/**/*.ts\""
   },
   "devDependencies": {

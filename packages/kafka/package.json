@@ -11,10 +11,11 @@
     "start:dev": "tsc -W"
   },
   "dependencies": {
-    "shared": "1.0.0",
+    "shared": "*",
     "kafkajs": "^2.0.0"
   },
   "devDependencies": {
+    "rimraf": "^6.0.1",
     "typescript": "^5.0.0"
   }
 }
