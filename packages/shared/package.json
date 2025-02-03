@@ -4,6 +4,8 @@
   "description": "Quang Long modules Shared",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
+  "author": "Quang Long",
+  "license": "MIT",
   "scripts": {
     "build": "rimraf tsconfig.tsbuildinfo && tsc",
     "start:dev": "tsc -W"
@@ -14,7 +16,9 @@
     "cassandra-driver": "^4.6.4",
     "kafkajs": "^2.0.0",
     "uuid": "^11.0.5",
-    "winston": "^3.17.0",
+    "winston": "^3.17.0"
+  },
+  "devDependencies": {
     "rimraf": "^6.0.1",
     "typescript": "^5.0.0"
   }

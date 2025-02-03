@@ -11,6 +11,8 @@ RUN yarn global add lerna \
     && yarn install --frozen-lockfile
 
 # Build shared package
-RUN yarn workspace shared build
+RUN yarn build
 
-CMD ["sh", "-c", "echo 'Shared package built successfully' && node dist/index.js"]
+RUN ls -la dist
+
+CMD ["sh", "-c", "echo 'Shared service running' && node dist/index.js"]
