@@ -13,7 +13,7 @@ export class OrderService {
   constructor() {
     this.cassandraClient = new CassandraClient(); // Khởi tạo Cassandra Client
     this.kafkaProducer = KafkaModule.createProducer(this.topic.TOPIC_ORDER, [
-      'localhost:29092',
+      '0.0.0.0:29092',
     ]);
   }
 

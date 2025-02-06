@@ -58,8 +58,14 @@ services:
       - CASSANDRA_LISTENER_INTERFACE=eth0
     volumes:
       - cassandra-data:/var/lib/cassandra
+      - ./packages/shared/init-cassandra.cql:/docker-entrypoint-initdb.d/init-cassandra.cql
     networks:
       - kafka-network
+    healthcheck:
+      test: ['CMD', 'cqlsh', '-e', 'DESCRIBE keyspaces']
+      interval: 10s
+      retries: 5
+    command: ['cqlsh', '-f', '/docker-entrypoint-initdb.d/init-cassandra.cql']
 
   elasticsearch:
     image: bitnami/elasticsearch:latest
@@ -150,33 +156,42 @@ services:
       - kong-migrations
     restart: always
 
-  shared-library:
-    build:
-      context: ./packages/shared
-      dockerfile: Dockerfile
-    networks:
-      - kafka-network
-    volumes:
-      - ./shared-build:/app/packages/shared/dist
-    depends_on:
-      - kafka
-      - cassandra
-      - elasticsearch
+  # shared-library:
+  #   build:
+  #     context: ./packages/shared
+  #     dockerfile: Dockerfile
+  #   networks:
+  #     - kafka-network
+  #   volumes:
+  #     - .:/cqrs-microservice
+  #   healthcheck:
+  #     test:
+  #       [
+  #         'CMD',
+  #         'sh',
+  #         '-c',
+  #         '[ -f /cqrs-microservice/packages/shared/dist/index.js ]',
+  #       ]
+  #     interval: 5s
+  #     retries: 5
 
-  kafka-library:
-    build:
-      context: ./packages/kafka
-      dockerfile: Dockerfile
-    networks:
-      - kafka-network
-    volumes:
-      - ./shared-build:/app/packages/shared/dist:ro
-      - ./kafka-build:/app/packages/kafka/dist
-    depends_on:
-      - shared-library
-      - kafka
-      - cassandra
-      - elasticsearch
+  # kafka-library:
+  #   build:
+  #     context: ./packages/kafka
+  #     dockerfile: Dockerfile
+  #   networks:
+  #     - kafka-network
+  #   depends_on:
+  #     shared-library:
+  #       condition: service_healthy
+  #     kafka:
+  #       condition: service_started
+  #     cassandra:
+  #       condition: service_started
+  #     elasticsearch:
+  #       condition: service_started
+  #   volumes:
+  #     - .:/cqrs-microservice
 
   # Chưa chắc chạy được
   command-service:
@@ -189,14 +204,11 @@ services:
     networks:
       - kafka-network
     depends_on:
-      - shared-library
-      - kafka-library
       - kafka
       - cassandra
       - elasticsearch
     volumes:
-      - ./shared-build:/app/packages/shared/dist:ro
-      - ./kafka-build:/app/packages/kafka/dist:ro
+      - .:/cqrs-microservice # Mount toàn bộ monorepo để Yarn Workspaces hoạt động
     environment:
       KAFKA_BROKER: kafka:9092
       CASSANDRA_HOST: cassandra

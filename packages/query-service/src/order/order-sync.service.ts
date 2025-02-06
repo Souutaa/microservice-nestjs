@@ -8,7 +8,7 @@ export class OrderSyncService implements OnModuleInit {
   private kafkaConsumer = new KafkaConsumer(
     KAFKA_CONSTANTS.Topic.TOPIC_ORDER,
     'query-service-group',
-    ['localhost:29092'],
+    ['0.0.0.0:29092'],
   ); // Khởi tạo Kafka Consumer
   private elasticsearchClient = new ElasticsearchClient();
 
