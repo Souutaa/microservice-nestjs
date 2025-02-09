@@ -5,10 +5,11 @@ import { KafkaConsumer } from 'kafka';
 @Injectable()
 export class OrderSyncService implements OnModuleInit {
   private actionType = KAFKA_CONSTANTS.OrderActionTypes;
+  private brokers = process.env.KAFKA_BROKER || '0.0.0.0:29092';
   private kafkaConsumer = new KafkaConsumer(
     KAFKA_CONSTANTS.Topic.TOPIC_ORDER,
     'query-service-group',
-    ['0.0.0.0:29092'],
+    [this.brokers],
   ); // Khởi tạo Kafka Consumer
   private elasticsearchClient = new ElasticsearchClient();
 

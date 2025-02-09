@@ -9,11 +9,11 @@ export class OrderService {
   private kafkaProducer: KafkaProducer;
   private topic = KAFKA_CONSTANTS.Topic;
   private actionOrder = KAFKA_CONSTANTS.OrderActionTypes;
-
+  private brokers = process.env.KAFKA_BROKER || '0.0.0.0:29092';
   constructor() {
     this.cassandraClient = new CassandraClient(); // Khởi tạo Cassandra Client
     this.kafkaProducer = KafkaModule.createProducer(this.topic.TOPIC_ORDER, [
-      '0.0.0.0:29092',
+      this.brokers,
     ]);
   }
 

@@ -2,11 +2,12 @@ import { Client } from 'cassandra-driver';
 
 export class CassandraClient {
   private client: Client;
-
+  private cassandraHost = process.env.CASSANDRA_HOST || '0.0.0.0';
+  private cassandraLocalDataCenter = process.env.CASSANDRA_DC || 'datacenter1';
   constructor(
     private readonly keyspace: string = 'ecommerce_keyspace',
-    private readonly contactPoints: string[] = ['0.0.0.0'], // Địa chỉ Cassandra
-    private readonly localDataCenter: string = 'datacenter1', // Tên datacenter
+    private readonly contactPoints: string[] = [this.cassandraHost], // Địa chỉ Cassandra
+    private readonly localDataCenter: string = this.cassandraLocalDataCenter, // Tên datacenter
   ) {
     this.client = new Client({
       contactPoints,

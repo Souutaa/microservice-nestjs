@@ -1,17 +1,22 @@
-# Sử dụng Node.js 20 Alpine làm base image
-FROM node:20-alpine
+# Sử dụng Node.js 20
+FROM node:20
 
+# Đặt thư mục làm việc
 WORKDIR /cqrs-microservice
 
-# Copy toàn bộ source code của dự án
-COPY . .
+# Copy package.json để tối ưu cache
+COPY package.json ./
+COPY ./packages/shared/package.json ./packages/shared/
 
-# Cài đặt Lerna và các dependencies
+# Cài đặt dependencies
 RUN yarn install --frozen-lockfile
 
-# Build shared package
-RUN yarn build
+# Copy toàn bộ source code của shared
+COPY ./packages/shared ./packages/shared/
 
-RUN ls -la dist
+# Build thư viện shared
+RUN yarn workspace shared run build
 
-CMD ["sh", "-c", "echo 'Shared service running' && yarn start:dev"]
+CMD ["tail", "-f", "/dev/null"]
+# Không cần EXPOSE vì đây không phải service
+# Không có CMD vì chỉ build thư viện, không chạy server

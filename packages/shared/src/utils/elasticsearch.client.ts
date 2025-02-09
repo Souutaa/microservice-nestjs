@@ -2,9 +2,10 @@ import { Client } from '@elastic/elasticsearch';
 
 export class ElasticsearchClient {
   private client: Client;
+  private elasticHost = process.env.ELASTICSEARCH_HOST || '0.0.0.0';
 
   constructor(
-    private readonly node: string = 'http://0.0.0.0:9200', // Địa chỉ Elasticsearch
+    private readonly node: string = `${this.elasticHost}:9200`, // Địa chỉ Elasticsearch
   ) {
     this.client = new Client({ node });
   }
